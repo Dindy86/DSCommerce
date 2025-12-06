@@ -20,7 +20,7 @@ public class ProductDTO {
     @Positive(message = "The price must be positive")
     private Double price;
     private String imgUrl;
-    @NotEmpty(message = "categories field can't be empty")
+    @NotEmpty(message = "categories field cannot be empty")
     List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {
