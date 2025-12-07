@@ -26,9 +26,9 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderDTO findById(Long id) {
-        Order product = repository.findById(id)
+        Order order = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
-        return new OrderDTO(product);
+        return new OrderDTO(order);
     }
 
     @Transactional
