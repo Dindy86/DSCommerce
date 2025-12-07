@@ -3,6 +3,7 @@ package com.devsuperior.dscommerce.controllers.handlers;
 import com.devsuperior.dscommerce.dto.CustomError;
 import com.devsuperior.dscommerce.dto.ValidationError;
 import com.devsuperior.dscommerce.services.exceptions.DatabaseException;
+import com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,13 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError error = new ValidationError(Instant.now(), status.value(), "invalid data", http.getRequestURI());
         ex.getBindingResult().getFieldErrors().forEach(f -> error.addError(f.getField(), f.getDefaultMessage()));
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest http) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError error = new CustomError(Instant.now(), status.value(), e.getMessage(), http.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 }
